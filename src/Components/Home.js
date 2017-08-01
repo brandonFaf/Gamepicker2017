@@ -19,17 +19,31 @@ class Home extends Component {
 					displayName: user.displayName,
 					email: user.email
 				});
+			} else {
+				self.setState({
+					signedIn: false,
+					displayName: '',
+					email: ''
+				});
 			}
 		});
 	}
+	logout() {
+		firebase.auth().signOut();
+	}
 	render() {
+		let link = null;
+		if (this.state.signedIn) {
+			link = <a onClick={this.logout}>Logout</a>;
+		} else {
+			link = <Link to="/login">login</Link>;
+		}
 		return (
 			<div>
 				<div>Home</div>
 				<span>{this.state.displayName}</span> |
 				<span>{this.state.email}</span> |
-				<span>{this.state.signedIn}</span>
-				<Link to="/login">login</Link>
+				{link}
 			</div>
 		);
 	}
