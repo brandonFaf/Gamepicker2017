@@ -10,24 +10,6 @@ class Home extends Component {
 			signedIn: false
 		};
 	}
-	componentDidMount() {
-		let self = this;
-		firebase.auth().onAuthStateChanged(function(user) {
-			if (user) {
-				self.setState({
-					signedIn: true,
-					displayName: user.displayName,
-					email: user.email
-				});
-			} else {
-				self.setState({
-					signedIn: false,
-					displayName: '',
-					email: ''
-				});
-			}
-		});
-	}
 	logout() {
 		firebase.auth().signOut();
 	}
@@ -43,7 +25,8 @@ class Home extends Component {
 				<div>Home</div>
 				<span>{this.state.displayName}</span> |
 				<span>{this.state.email}</span> |
-				{link}
+				{link} |
+				<Link to="/pick">Pick</Link>
 			</div>
 		);
 	}

@@ -1,12 +1,12 @@
 import React from 'react';
 import Home from './Home';
 import Login from './Login';
-import { Switch, Route } from 'react-router-dom';
+import PickerPage from './PickerPage';
+import { Route } from 'react-router-dom';
 const Main = () =>
-	<div>
-		<Switch>
-			<Route exact path="/" component={Home} />
-			<Route path="/login" component={Login} />
-		</Switch>
-	</div>;
+	(<div>
+		<Route exact path="/" component={Home} />
+		<Route path="/login" component={Login} />
+		<Route path="/pick" component={PickerPage} />
+	</div>);
 export default Main;
