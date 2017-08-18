@@ -1,0 +1,17 @@
+ul {
+	padding: 0;
+}
+li {
+	margin-bottom: 10px;
+}
+span {
+	padding: 3px 10px;
+	cursor: pointer;
+	text-align: left;
+	margin-bottom: 10px;
+}
+.selected {
+	border: 1px solid green;
+	border-radius: 90px;
+	color: green;
+}

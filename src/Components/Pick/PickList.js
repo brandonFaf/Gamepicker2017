@@ -1,23 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-class PickerPage extends Component {
+import PickLine from './PickLine';
+class PickList extends Component {
 	render() {
 		return (
-			<div>
-				PickerPage
-				{this.props.games.map(x => {
-					return (
-						<li key={x.awayTeam}>
-							{x.awayTeam} vs {x.homeTeam}
-						</li>
-					);
-				})}
-			</div>
+			<ul>
+				{this.props.games.map(game => <PickLine key={game.id} game={game} />)}
+			</ul>
 		);
 	}
 }
 function getGamesByWeek(games, week) {
-	week = 3;
 	const gamesToDisplay = games.filter(game => {
 		return game.week === week;
 	});
@@ -30,4 +23,4 @@ function mapStateToProps(state, ownProps) {
 	};
 }
 
-export default connect(mapStateToProps)(PickerPage);
+export default connect(mapStateToProps)(PickList);

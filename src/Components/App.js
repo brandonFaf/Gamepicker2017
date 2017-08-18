@@ -7,6 +7,7 @@ import config from '../data/firebaseConfig.js';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as selectActions from '../data/actions/gameActions';
+import * as userActions from '../data/actions/userActions';
 import { withRouter } from 'react-router';
 class App extends Component {
 	constructor(props) {
@@ -14,8 +15,8 @@ class App extends Component {
 		firebase.initializeApp(config);
 		firebase.auth().onAuthStateChanged(function(user) {
 			if (user) {
-				console.log('here');
 				props.actions.loadGames();
+				props.userActions.loadUser(user.uid);
 			}
 		});
 	}
@@ -32,7 +33,9 @@ class App extends Component {
 	}
 }
 function mapActionsToProps(dispatch) {
-	console.log('here 1');
-	return { actions: bindActionCreators(selectActions, dispatch) };
+	return {
+		actions: bindActionCreators(selectActions, dispatch),
+		userActions: bindActionCreators(userActions, dispatch)
+	};
 }
 export default withRouter(connect(null, mapActionsToProps)(App));

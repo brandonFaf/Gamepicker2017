@@ -1,11 +1,6 @@
 import * as types from './actionTypes';
 import firebase from 'firebase';
-import { Actions, ActionConst } from 'react-native-router-flux';
-import { AsyncStorage } from 'react-native';
-//Offline
-// import UserAPI from '../../data/OfflineUserAPI';
-//Firebase
-import UserAPI from '../../data/FirebaseUserAPI';
+import UserAPI from '../FirebaseUserAPI';
 
 import { loadPicks } from './gameActions';
 function userLoggedInSuccess(user) {
@@ -48,8 +43,8 @@ export function logOut() {
 	return dispatch => {
 		firebase.auth().signOut().then(() => {
 			dispatch(userLoggedOut());
-			AsyncStorage.clear();
-			Actions.login(ActionConst.REPLACE);
+			// AsyncStorage.clear();
+			// Actions.login(ActionConst.REPLACE);
 		});
 	};
 }
@@ -59,7 +54,7 @@ export function loadUser(uid) {
 			let userObj = Object.assign(user.val(), { uid });
 			dispatch(userLoggedInSuccess(userObj));
 			dispatch(loadPicks(uid));
-			Actions.home(ActionConst.REPLACE);
+			// Actions.home(ActionConst.REPLACE);
 		});
 	};
 }
