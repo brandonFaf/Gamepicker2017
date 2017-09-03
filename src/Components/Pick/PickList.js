@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PickLine from './PickLine';
+import TimeList from './TimeList';
 class PickList extends Component {
 	render() {
 		return (
 			<ul>
-				{this.props.games.map(game => <PickLine key={game.id} game={game} />)}
+				{Object.keys(this.props.games).map(gameTime => {
+					let games = this.props.games[gameTime];
+					return <TimeList key={gameTime} gameTime={gameTime} games={games} />;
+				})}
 			</ul>
 		);
 	}
@@ -14,7 +17,15 @@ function getGamesByWeek(games, week) {
 	const gamesToDisplay = games.filter(game => {
 		return game.week === week;
 	});
-	return gamesToDisplay;
+	let timeMap = {};
+	gamesToDisplay.forEach(game => {
+		const key = game.day + ' ' + game.date + ' ' + game.time;
+		if (!timeMap[key]) {
+			timeMap[key] = [];
+		}
+		timeMap[key].push(game);
+	});
+	return timeMap;
 }
 
 function mapStateToProps(state, ownProps) {

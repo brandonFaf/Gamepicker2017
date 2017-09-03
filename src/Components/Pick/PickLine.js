@@ -50,9 +50,7 @@ class PickLine extends Component {
 			});
 		} else {
 			if (!this.isValid(this.state.game)) {
-				this.setState({
-					error: 'Oops You tried to make/change your pick too late'
-				});
+				this.props.showError();
 				return;
 			}
 			if (teamName === this.state.game.awayTeam) {
@@ -94,17 +92,13 @@ class PickLine extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-	const game = ownProps.game; //getGameById(state.games, ownProps.id);
+	const game = ownProps.game;
 	const picks = state.picks;
-	// const [awayRecord, homeRecord] = getRecordsForTeams(
-	// 	state.weeklyRecords,
-	// 	game
-	// );
+
 	return {
 		game,
 		user: state.user,
-		picks,
-		loading: state.loading
+		picks
 	};
 }
 function mapActionsToProps(dispatch) {
