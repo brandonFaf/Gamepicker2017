@@ -8,7 +8,7 @@ export default function userReducer(state = { loading: true }, action) {
 		case types.NO_USER:
 		case types.SAVE_PICK:
 		case types.SAVE_WINNER:
-		case types.LOG_IN_SUCCESS:
+		case types.LOAD_PICKS_SUCCESS:
 			return false;
 		default:
 			return state;
