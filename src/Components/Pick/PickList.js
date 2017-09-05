@@ -3,16 +3,17 @@ import { connect } from 'react-redux';
 import TimeList from './TimeList';
 class PickList extends Component {
 	render() {
-		let result = this.props.loading
-			? <div className="loader" />
-			: <ul>
-					{Object.keys(this.props.games).map(gameTime => {
-						let games = this.props.games[gameTime];
-						return (
-							<TimeList key={gameTime} gameTime={gameTime} games={games} />
-						);
-					})}
-				</ul>;
+		let result =
+			Object.keys(this.props.games).length === 0
+				? <div className="loader" />
+				: <ul>
+						{Object.keys(this.props.games).map(gameTime => {
+							let games = this.props.games[gameTime];
+							return (
+								<TimeList key={gameTime} gameTime={gameTime} games={games} />
+							);
+						})}
+					</ul>;
 		return result;
 	}
 }
@@ -33,8 +34,7 @@ function getGamesByWeek(games, week) {
 
 function mapStateToProps(state, ownProps) {
 	return {
-		games: getGamesByWeek(state.games, ownProps.week),
-		loading: state.loading
+		games: getGamesByWeek(state.games, ownProps.week)
 	};
 }
 
