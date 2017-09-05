@@ -15,7 +15,7 @@ class PickPage extends Component {
 					{weeks.map(week =>
 						<h3
 							key={week}
-							className={this.state.week == week + 1 ? 'isActive' : ''}
+							className={this.state.week === week + 1 ? 'isActive' : ''}
 							onClick={() => this.setState({ week: week + 1 })}
 						>
 							{week + 1}

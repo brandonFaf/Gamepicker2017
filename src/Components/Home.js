@@ -26,6 +26,7 @@ class Home extends Component {
 				<span>{this.state.displayName}</span> |
 				<span>{this.state.email}</span> |
 				{link} |
+				<a onClick={this.logout}>Logout</a>
 				<Link to="/pick">Pick</Link>
 			</div>
 		);

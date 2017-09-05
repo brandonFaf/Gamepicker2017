@@ -4,7 +4,7 @@ import firebase from 'firebase';
 class Login extends Component {
 	componentDidMount() {
 		const uiConfig = {
-			signInSuccessUrl: '/',
+			signInSuccessUrl: '/login/username',
 			signInOptions: [
 				// Leave the lines as is for the providers you want to offer your users.
 				firebase.auth.GoogleAuthProvider.PROVIDER_ID,

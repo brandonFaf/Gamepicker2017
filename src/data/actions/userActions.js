@@ -1,7 +1,6 @@
 import * as types from './actionTypes';
 import firebase from 'firebase';
 import UserAPI from '../FirebaseUserAPI';
-
 import { loadPicks } from './gameActions';
 function userLoggedInSuccess(user) {
 	return { type: types.LOG_IN_SUCCESS, user };
@@ -15,46 +14,32 @@ function userLoggedOut() {
 export function toggleAdmin() {
 	return { type: types.TOGGLE_ADMIN };
 }
-export function saveUser(userName, uid) {
+export function saveUser(userName, uid, history) {
 	return function(dispatch) {
 		let updates = {};
 		updates['users/' + uid] = { userName };
 		firebase.database().ref().update(updates).then(() => {
-			dispatch(userLoggedInSuccess({ user: { userName, uid } }));
+			dispatch(userLoggedInSuccess({ userName, uid }));
+			history.push('/');
 		});
 	};
 }
 
-export function loginUser(credential, userName) {
-	return function(dispatch) {
-		return firebase
-			.auth()
-			.signInWithCredential(credential)
-			.then(user => {
-				dispatch(saveUser(userName, user.uid));
-				return user.uid;
-			})
-			.catch(err => {
-				//TODO add alert saying login failed and go back to login screen.
-			});
-	};
-}
 export function logOut() {
 	return dispatch => {
 		firebase.auth().signOut().then(() => {
 			dispatch(userLoggedOut());
-			// AsyncStorage.clear();
-			// Actions.login(ActionConst.REPLACE);
 		});
 	};
 }
 export function loadUser(uid) {
 	return function(dispatch) {
 		UserAPI.loadUser(uid).then(user => {
-			let userObj = Object.assign(user.val(), { uid });
-			dispatch(userLoggedInSuccess(userObj));
-			dispatch(loadPicks(uid));
-			// Actions.home(ActionConst.REPLACE);
+			if (user.val()) {
+				let userObj = Object.assign(user.val(), { uid });
+				dispatch(userLoggedInSuccess(userObj));
+				dispatch(loadPicks(uid));
+			}
 		});
 	};
 }
