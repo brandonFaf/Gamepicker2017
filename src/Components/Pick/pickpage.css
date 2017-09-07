@@ -25,7 +25,7 @@ a {
 	cursor: pointer;
 }
 .weeksContainer h3.isActive {
-	color: blue;
+	color: darkgoldenrod;
 }
 .weeksContainer {
 	overflow: scroll;
