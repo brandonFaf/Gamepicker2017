@@ -21,18 +21,20 @@ class UserName extends Component {
 		});
 	}
 	submitUserName() {
-		if (this.props.user.userName !== '') {
+		if (this.props.user.userName && this.props.user.userName !== '') {
 			this.props.actions.saveUser(
 				this.props.user.userName,
 				this.state.uid,
 				this.props.history
 			);
 		} else {
-			this.props.actions.saveUser(
-				this.state.userName,
-				this.state.uid,
-				this.props.history
-			);
+			if (this.state.userName !== '') {
+				this.props.actions.saveUser(
+					this.state.userName,
+					this.state.uid,
+					this.props.history
+				);
+			}
 		}
 	}
 	userNameChanged(event) {
