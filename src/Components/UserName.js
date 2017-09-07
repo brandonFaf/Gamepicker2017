@@ -7,6 +7,7 @@ class UserName extends Component {
 	constructor(props) {
 		super(props);
 		this.userNameChanged = this.userNameChanged.bind(this);
+		this.submitUserName = this.submitUserName.bind(this);
 		this.state = {
 			userName: ''
 		};
@@ -19,40 +20,50 @@ class UserName extends Component {
 			}
 		});
 	}
+	submitUserName() {
+		if (this.props.user.userName !== '') {
+			this.props.actions.saveUser(
+				this.props.user.userName,
+				this.state.uid,
+				this.props.history
+			);
+		} else {
+			this.props.actions.saveUser(
+				this.state.userName,
+				this.state.uid,
+				this.props.history
+			);
+		}
+	}
 	userNameChanged(event) {
 		this.setState({ userName: event.target.value });
 	}
 	render() {
+		let userName = this.props.user.userName;
+		let userNameDisabled = userName && userName !== '';
 		return (
-			<div
-				onSubmit={() =>
-					this.props.actions.saveUser(this.state.userName, this.state.uid)}
-				className={'container'}
-			>
+			<div onSubmit={this.submitUserName} className={'container'}>
 				<label htmlFor="userName">User Name:</label>
 				<input
 					id={'userName'}
 					type="text"
-					value={this.state.userName}
+					value={userName}
 					onChange={this.userNameChanged}
+					disabled={userNameDisabled}
 				/>
-				<button
-					onClick={() =>
-						this.props.actions.saveUser(
-							this.state.userName,
-							this.state.uid,
-							this.props.history
-						)}
-				>
-					Create Account
-				</button>
+				<button onClick={this.submitUserName}>Create Account</button>
 			</div>
 		);
 	}
+}
+function mapStateToProps(state) {
+	return {
+		user: state.user
+	};
 }
 function mapActionsToProps(dispatch) {
 	return {
 		actions: bindActionCreators(userActions, dispatch)
 	};
 }
-export default connect(null, mapActionsToProps)(UserName);
+export default connect(mapStateToProps, mapActionsToProps)(UserName);
