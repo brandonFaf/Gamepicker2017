@@ -27,7 +27,7 @@ export function loadGames() {
 				//A hacky way to do this would be to grab like 16*3 games around the current week. I'll grab extras though because of byes
 				let keys = Object.keys(snapshot.val());
 				//give the game an id based on the key it has. Have to do it with keys because might not always get an array back.
-				let games = snapshot.val().map((n, i) => {
+				let games = snapshot.val().filter(String).map((n, i) => {
 					return Object.assign(n, { id: keys[i] });
 				});
 				dispatch(loadGamesSuccess(games));
@@ -37,26 +37,33 @@ export function loadGames() {
 			});
 	};
 }
-export function savePick(game, winningTeam, losingTeam) {
+export function savePick(game, winningTeam) {
 	return (dispatch, getState) => {
 		dispatch(showLoading());
 		let updates = {};
 		const { user } = getState();
-		if (user.adminActive) {
-			updates[`winners/${game.id}`] = winningTeam;
-			updates[`records/result/${winningTeam}/${game.week}`] = true;
-			updates[`records/result/${losingTeam}/${game.week}`] = false;
-		} else {
-			updates[`picks/${user.id}/${game.id}`] = winningTeam;
-		}
+		updates[`picks/${user.id}/${game.id}`] = winningTeam;
 		updates[`games/${game.id}`] = game;
 		return GameAPI.savePick(updates)
 			.then(() => {
-				if (user.adminActive) {
-					dispatch(saveWinnerSuccess(game, winningTeam, losingTeam));
-				} else {
-					dispatch(savePickSuccess(game, winningTeam));
-				}
+				dispatch(savePickSuccess(game, winningTeam));
+			})
+			.catch(err => {
+				throw err;
+			});
+	};
+}
+export function saveWinner(game, winningTeam, losingTeam) {
+	return (dispatch, getState) => {
+		dispatch(showLoading());
+		let updates = {};
+		updates[`winners/${game.id}`] = winningTeam;
+		updates[`records/result/${winningTeam}/${game.week}`] = true;
+		updates[`records/result/${losingTeam}/${game.week}`] = false;
+		updates[`games/${game.id}`] = game;
+		return GameAPI.savePick(updates)
+			.then(() => {
+				dispatch(saveWinnerSuccess(game, winningTeam, losingTeam));
 			})
 			.catch(err => {
 				throw err;

@@ -15,9 +15,9 @@ span {
 	margin-bottom: 10px;
 }
 .selected {
-	border: 1px solid green;
+	border: 1px solid #d2c83c;
 	border-radius: 90px;
-	color: green;
+	color: #d2c83c;
 	padding: 3px 10px;
 }
 a {
@@ -38,4 +38,11 @@ a {
 }
 .picksContainer {
 	padding-bottom: 15px;
+}
+.admin {
+	background-color: #73ceca;
+}
+.admin .selected {
+	border-color: green;
+	color: green;
 }
