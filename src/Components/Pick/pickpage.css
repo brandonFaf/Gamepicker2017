@@ -15,9 +15,9 @@ span {
 	margin-bottom: 10px;
 }
 .selected {
-	border: 1px solid #d2c83c;
+	border: 1px solid #1d78cc;
 	border-radius: 90px;
-	color: #d2c83c;
+	color: #1d78cc;
 	padding: 3px 10px;
 }
 a {
@@ -45,4 +45,12 @@ a {
 .admin .selected {
 	border-color: green;
 	color: green;
+}
+.correct {
+	border-color: green;
+	color: green;
+}
+.wrong {
+	border-color: red;
+	color: red;
 }

@@ -39,49 +39,43 @@ class PickLine extends Component {
 
 	savePick(teamName) {
 		let winningTeam, losingTeam;
-		if (this.props.user.adminActive) {
-			winningTeam = teamName;
-			losingTeam =
-				teamName === this.state.game.awayTeam
-					? this.state.game.homeTeam
-					: this.state.game.awayTeam;
-			this.setState({
-				game: Object.assign(this.state.game, { winner: teamName })
-			});
+		if (!this.isValid(this.state.game)) {
+			this.props.showError();
+			return;
+		}
+		if (teamName === this.state.game.awayTeam) {
+			winningTeam = this.state.game.awayTeam;
+			losingTeam = this.state.game.homeTeam;
+			this.addPick(this.state.game, 'pickedAwayTeam');
+			this.removePick(this.state.game, 'pickedHomeTeam');
 		} else {
-			if (!this.isValid(this.state.game)) {
-				this.props.showError();
-				return;
-			}
-			if (teamName === this.state.game.awayTeam) {
-				winningTeam = this.state.game.awayTeam;
-				losingTeam = this.state.game.homeTeam;
-				this.addPick(this.state.game, 'pickedAwayTeam');
-				this.removePick(this.state.game, 'pickedHomeTeam');
-			} else {
-				losingTeam = this.state.game.awayTeam;
-				winningTeam = this.state.game.homeTeam;
-				this.addPick(this.state.game, 'pickedHomeTeam');
-				this.removePick(this.state.game, 'pickedAwayTeam');
-			}
+			losingTeam = this.state.game.awayTeam;
+			winningTeam = this.state.game.homeTeam;
+			this.addPick(this.state.game, 'pickedHomeTeam');
+			this.removePick(this.state.game, 'pickedAwayTeam');
 		}
 		this.props.actions.savePick(this.state.game, winningTeam, losingTeam);
 	}
 	render() {
 		const { game, picks } = this.props;
-		const awaySelected = picks[game.id] === game.awayTeam ? 'selected' : '';
-		const homeSelected = picks[game.id] === game.homeTeam ? 'selected' : '';
+		let pick = picks[game.id];
+		const awaySelected = pick === game.awayTeam ? 'selected' : '';
+		const homeSelected = pick === game.homeTeam ? 'selected' : '';
+		let correct = '';
+		if (game.winner) {
+			correct = pick === game.winner ? 'correct' : 'wrong';
+		}
 		return (
 			<li>
 				<span
-					className={awaySelected}
+					className={`${awaySelected} ${correct}`}
 					onClick={() => this.savePick(game.awayTeam)}
 				>
 					{game.awayTeam}
 				</span>{' '}
 				@{' '}
 				<span
-					className={homeSelected}
+					className={`${homeSelected} ${correct}`}
 					onClick={() => this.savePick(game.homeTeam)}
 				>
 					{' '}{game.homeTeam}
