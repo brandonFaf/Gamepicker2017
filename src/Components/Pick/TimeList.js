@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PickLine from './PickLine';
+import { Route } from 'react-router-dom';
+import AdminLine from './AdminLine.js';
 class TimeList extends Component {
 	constructor(props) {
 		super(props);
@@ -21,11 +23,26 @@ class TimeList extends Component {
 					</div>}
 				<ul>
 					{games.map(game =>
-						<PickLine
-							showError={this.showError.bind(this)}
-							key={game.id}
-							game={game}
-						/>
+						<div key={game.id}>
+							<Route
+								exact
+								path="/pick"
+								render={() =>
+									<PickLine
+										showError={this.showError.bind(this)}
+										game={game}
+									/>}
+							/>
+							<Route
+								exact
+								path="/pick/admin"
+								render={() =>
+									<AdminLine
+										showError={this.showError.bind(this)}
+										game={game}
+									/>}
+							/>
+						</div>
 					)}
 				</ul>
 			</li>
