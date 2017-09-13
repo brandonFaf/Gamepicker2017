@@ -9,7 +9,7 @@ class PickPage extends Component {
 	render() {
 		const weeks = Array.apply(null, { length: 17 }).map(Number.call, Number);
 		return (
-			<div className={'picksContainer'}>
+			<div>
 				<h1>Make Your Picks</h1>
 				<div className={'weeksContainer'}>
 					{weeks.map(week =>

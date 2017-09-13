@@ -56,31 +56,50 @@ class PickLine extends Component {
 		}
 		this.props.actions.savePick(this.state.game, winningTeam, losingTeam);
 	}
+	combine(arr) {
+		if (arr) {
+			return arr.filter(x => x).sort((a, b) => a < b).join(', ');
+		}
+		return '';
+	}
 	render() {
 		const { game, picks } = this.props;
 		let pick = picks[game.id];
 		const awaySelected = pick === game.awayTeam ? 'selected' : '';
 		const homeSelected = pick === game.homeTeam ? 'selected' : '';
+		const divider = !this.isValid(game) ? 'divider' : '';
 		let correct = '';
 		if (game.winner) {
 			correct = pick === game.winner ? 'correct' : 'wrong';
 		}
 		return (
-			<li>
+			<div className={'container'}>
 				<span
-					className={`${awaySelected} ${correct}`}
+					className={`awayTeam box ${divider} ${awaySelected} ${correct}`}
 					onClick={() => this.savePick(game.awayTeam)}
 				>
-					{game.awayTeam}
-				</span>{' '}
-				@{' '}
+					<span>
+						{game.awayTeam}
+					</span>
+				</span>
+				<span className={'at box'}>@</span>
 				<span
-					className={`${homeSelected} ${correct}`}
+					className={`homeTeam box ${divider} ${homeSelected} ${correct}`}
 					onClick={() => this.savePick(game.homeTeam)}
 				>
-					{' '}{game.homeTeam}
+					<span>
+						{game.homeTeam}
+					</span>
 				</span>
-			</li>
+				{!this.isValid(game) &&
+					<span className={'pickedAway'}>
+						{this.combine(game.pickedAwayTeam)}
+					</span>}
+				{!this.isValid(game) &&
+					<span className={'pickedHome'}>
+						{this.combine(game.pickedHomeTeam)}
+					</span>}
+			</div>
 		);
 	}
 }

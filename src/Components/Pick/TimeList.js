@@ -21,30 +21,23 @@ class TimeList extends Component {
 					<div className={'error'}>
 						Oops You tried to make/change your pick too late
 					</div>}
-				<ul>
-					{games.map(game =>
-						<div key={game.id}>
-							<Route
-								exact
-								path="/pick"
-								render={() =>
-									<PickLine
-										showError={this.showError.bind(this)}
-										game={game}
-									/>}
-							/>
-							<Route
-								exact
-								path="/pick/admin"
-								render={() =>
-									<AdminLine
-										showError={this.showError.bind(this)}
-										game={game}
-									/>}
-							/>
-						</div>
-					)}
-				</ul>
+
+				{games.map(game =>
+					<div key={game.id}>
+						<Route
+							exact
+							path="/pick"
+							render={() =>
+								<PickLine showError={this.showError.bind(this)} game={game} />}
+						/>
+						<Route
+							exact
+							path="/pick/admin"
+							render={() =>
+								<AdminLine showError={this.showError.bind(this)} game={game} />}
+						/>
+					</div>
+				)}
 			</li>
 		);
 	}
