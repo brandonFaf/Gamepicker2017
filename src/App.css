@@ -29,7 +29,7 @@
 	animation: spin 2s linear infinite;
 	margin: auto;
 }
-.container {
+.login-container {
 	margin-top: 15px;
 }
 input[type="text"] {

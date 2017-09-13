@@ -6,19 +6,56 @@ ul {
 	padding-left: 0;
 	margin-top: 0;
 }
-li {
-	margin-bottom: 10px;
-}
 span {
 	cursor: pointer;
 	text-align: left;
-	margin-bottom: 10px;
+	margin-bottom: 8px;
 }
-.selected {
+
+.container {
+	display: grid;
+	margin-top: 0;
+	grid-template-columns: 35% 10% 35%;
+	grid-template-rows: auto;
+	justify-content: center;
+	justify-items: center;
+	margin-top: 10px;
+}
+.box {
+	font-size: 74%;
+	padding-bottom: 6px;
+}
+.awayTeam {
+	grid-column: 1 / 2;
+	grid-row: 1 / 2;
+}
+.homeTeam {
+	grid-column: 3 / 4;
+	grid-row: 1 / 2;
+}
+.divider {
+	border-bottom: solid black 2px;
+}
+.at {
+	grid-column: 2 / 3;
+	grid-row: 1 / 2;
+}
+.pickedHome {
+	grid-column: 3/4;
+	grid-row: 2/3;
+	font-size: 74%;
+}
+.pickedAway {
+	grid-column: 1/2;
+	grid-row: 2/3;
+	font-size: 74%;
+}
+.selected > span {
 	border: 1px solid #1d78cc;
 	border-radius: 90px;
 	color: #1d78cc;
-	padding: 3px 10px;
+	width: fit-content;
+	padding: 3px 5px;
 }
 a {
 	padding: 10px;
@@ -36,9 +73,6 @@ a {
 	padding: 10px;
 	cursor: pointer;
 }
-.picksContainer {
-	padding-bottom: 15px;
-}
 .admin {
 	background-color: #73ceca;
 }
@@ -46,11 +80,11 @@ a {
 	border-color: green;
 	color: green;
 }
-.correct {
+.selected.correct > span {
 	border-color: green;
 	color: green;
 }
-.wrong {
+.selected.wrong > span {
 	border-color: red;
 	color: red;
 }
