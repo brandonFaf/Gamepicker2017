@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../data/actions/userActions.js';
+import Scoreboard from './Scoreboard.js';
 class Home extends Component {
 	render() {
 		let link = null;
@@ -17,6 +18,9 @@ class Home extends Component {
 				<span>{this.props.user.userName}</span> |
 				{link} |
 				<Link to="/pick">Pick</Link>
+				<div>
+					<Scoreboard userName={this.props.user.userName} />
+				</div>
 			</div>
 		);
 	}
