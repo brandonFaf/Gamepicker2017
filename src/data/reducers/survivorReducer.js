@@ -14,7 +14,10 @@ export default function survivorReducer(state = [], action) {
 		}
 		case types.SAVE_SURVIVOR: {
 			let newArray = state.slice();
-			newArray[action.week] = action.team;
+
+			newArray[action.week] = action.team
+				? { team: action.team, id: action.id }
+				: null;
 			return newArray;
 		}
 		default:

@@ -22,19 +22,19 @@ function loadSurvivorSuccess(teams) {
 function loadWeeklyRecordsSuccess(teams) {
 	return { type: types.LOAD_WEEKLY_RECORDS_SUCCESS, teams };
 }
-function saveSurvivorSuccess(team, week) {
-	return { type: types.SAVE_SURVIVOR, team, week };
+function saveSurvivorSuccess(team, week, id) {
+	return { type: types.SAVE_SURVIVOR, team, week, id };
 }
 
-export function saveSurvivor(team, week) {
+export function saveSurvivor(team, week, id) {
 	return (dispatch, getState) => {
 		dispatch(showLoading());
 		let updates = {};
 		const { user } = getState();
-		updates[`survivor/${user.id}/${week}`] = team;
+		updates[`survivor/${user.id}/${week}`] = { team, id };
 		return GameAPI.save(updates)
 			.then(() => {
-				dispatch(saveSurvivorSuccess(team, week));
+				dispatch(saveSurvivorSuccess(team, week, id));
 			})
 			.catch(err => {
 				throw err;

@@ -33,10 +33,12 @@ class PickLine extends Component {
 	}
 
 	selectSurvivor(team) {
-		if (this.props.survivorTeams[this.state.game.week] === team) {
-			this.props.actions.saveSurvivor(null, this.state.game.week);
+		let { week, id } = this.state.game;
+		const selected = this.props.survivorTeams[week];
+		if (selected && selected.team === team) {
+			this.props.actions.saveSurvivor(null, week, null);
 		} else {
-			this.props.actions.saveSurvivor(team, this.state.game.week);
+			this.props.actions.saveSurvivor(team, week, id);
 		}
 	}
 
@@ -51,9 +53,11 @@ class PickLine extends Component {
 	getSurvivorContent(team, week) {
 		const selected = this.props.survivorTeams[week];
 		if (selected || !this.isValid(this.state.game)) {
-			return selected === team ? '⭐' : null;
+			return selected && selected.team === team ? '⭐' : null;
 		} else {
-			return this.props.survivorTeams.find(x => x === team) ? null : '\u2606';
+			return this.props.survivorTeams.find(x => x && x.team === team)
+				? null
+				: '\u2606';
 		}
 	}
 
