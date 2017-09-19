@@ -3,11 +3,14 @@ export default class GameAPI {
 	static loadGames() {
 		return firebase.database().ref('games').once('value');
 	}
-	static savePick(updates) {
+	static save(updates) {
 		return firebase.database().ref().update(updates);
 	}
 	static loadUserPicks(userId) {
 		return firebase.database().ref(`picks/${userId}`).once('value');
+	}
+	static loadUserSurvivor(userId) {
+		return firebase.database().ref(`survivor/${userId}`).once('value');
 	}
 	static loadUserRecords(userId) {
 		return firebase.database().ref(`records/${userId}`).once('value');

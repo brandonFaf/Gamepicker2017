@@ -1,7 +1,7 @@
 import * as types from './actionTypes';
 import firebase from 'firebase';
 import UserAPI from '../FirebaseUserAPI';
-import { loadPicks } from './gameActions';
+import { loadPicks, loadSurvivor } from './gameActions';
 function userLoggedInSuccess(user) {
 	return { type: types.LOG_IN_SUCCESS, user };
 }
@@ -39,6 +39,7 @@ export function loadUser(uid) {
 				let userObj = Object.assign(user.val(), { uid });
 				dispatch(userLoggedInSuccess(userObj));
 				dispatch(loadPicks(uid));
+				dispatch(loadSurvivor(uid));
 			}
 		});
 	};

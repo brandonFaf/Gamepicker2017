@@ -2,13 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { bindActionCreators } from 'redux';
-import * as selectActions from '../../data/actions/gameActions';
+import * as gameActions from '../../data/actions/gameActions';
 class PickLine extends Component {
 	constructor(props) {
 		super(props);
 		this.savePick = this.savePick.bind(this);
 		this.addPick = this.addPick.bind(this);
-		this.state = { game: Object.assign({}, props.game) };
+		this.selectSurvivor = this.selectSurvivor.bind(this);
+		this.state = {
+			game: Object.assign({}, props.game)
+		};
 	}
 	addPick(game, array) {
 		if (!game[array]) {
@@ -29,12 +32,29 @@ class PickLine extends Component {
 		}
 	}
 
+	selectSurvivor(team) {
+		if (this.props.survivorTeams[this.state.game.week] === team) {
+			this.props.actions.saveSurvivor(null, this.state.game.week);
+		} else {
+			this.props.actions.saveSurvivor(team, this.state.game.week);
+		}
+	}
+
 	isValid(game) {
 		const format = 'MMMM D h:mm a';
 		const now = moment(moment(), format);
 		const gameTime = moment(game.date + ' ' + game.time, format);
 
 		return now.isBefore(gameTime);
+	}
+
+	getSurvivorContent(team, week) {
+		const selected = this.props.survivorTeams[week];
+		if (selected || !this.isValid(this.state.game)) {
+			return selected === team ? '⭐' : null;
+		} else {
+			return this.props.survivorTeams.find(x => x === team) ? null : '\u2606';
+		}
 	}
 
 	savePick(teamName) {
@@ -64,9 +84,12 @@ class PickLine extends Component {
 	}
 	render() {
 		const { game, picks } = this.props;
+		const { awayTeam, homeTeam } = game;
 		let pick = picks[game.id];
-		const awaySelected = pick === game.awayTeam ? 'selected' : '';
-		const homeSelected = pick === game.homeTeam ? 'selected' : '';
+		let awaySurvivor = this.getSurvivorContent(awayTeam, game.week);
+		let homeSurvivor = this.getSurvivorContent(homeTeam, game.week);
+		const awaySelected = pick === awayTeam ? 'selected' : '';
+		const homeSelected = pick === homeTeam ? 'selected' : '';
 		const divider = !this.isValid(game) ? 'divider' : '';
 		let correct = '';
 		if (game.winner) {
@@ -74,23 +97,37 @@ class PickLine extends Component {
 		}
 		return (
 			<div className={'container'}>
+				{awaySurvivor &&
+					<button
+						onClick={() => this.selectSurvivor(awayTeam)}
+						className={'survivor-away'}
+					>
+						{awaySurvivor}
+					</button>}
 				<span
 					className={`awayTeam box ${divider} ${awaySelected} ${correct}`}
-					onClick={() => this.savePick(game.awayTeam)}
+					onClick={() => this.savePick(awayTeam)}
 				>
 					<span>
-						{game.awayTeam}
+						{awayTeam}
 					</span>
 				</span>
 				<span className={'at box'}>@</span>
 				<span
 					className={`homeTeam box ${divider} ${homeSelected} ${correct}`}
-					onClick={() => this.savePick(game.homeTeam)}
+					onClick={() => this.savePick(homeTeam)}
 				>
 					<span>
-						{game.homeTeam}
+						{homeTeam}
 					</span>
 				</span>
+				{homeSurvivor &&
+					<button
+						onClick={() => this.selectSurvivor(homeTeam)}
+						className={'survivor-home'}
+					>
+						{homeSurvivor}
+					</button>}
 				{!this.isValid(game) &&
 					<span className={'pickedAway'}>
 						{this.combine(game.pickedAwayTeam)}
@@ -105,16 +142,14 @@ class PickLine extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-	const game = ownProps.game;
-	const picks = state.picks;
+	const { picks, user } = state;
 
 	return {
-		game,
-		user: state.user,
+		user,
 		picks
 	};
 }
 function mapActionsToProps(dispatch) {
-	return { actions: bindActionCreators(selectActions, dispatch) };
+	return { actions: bindActionCreators(gameActions, dispatch) };
 }
 export default connect(mapStateToProps, mapActionsToProps)(PickLine);
