@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../data/actions/userActions.js';
 import Scoreboard from './Scoreboard.js';
+import SurvivorStreaks from './SurvivorStreaks.js';
 class Home extends Component {
 	render() {
 		let link = null;
@@ -20,6 +21,9 @@ class Home extends Component {
 				<Link to="/pick">Pick</Link>
 				<div>
 					<Scoreboard userName={this.props.user.userName} />
+				</div>
+				<div>
+					<SurvivorStreaks userName={this.props.user.userName} />
 				</div>
 			</div>
 		);

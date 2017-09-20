@@ -21,6 +21,9 @@ export default class GameAPI {
 	static loadPicks() {
 		return firebase.database().ref('picks').once('value');
 	}
+	static loadSurvivor() {
+		return firebase.database().ref('survivor').once('value');
+	}
 	static loadWinners() {
 		return firebase.database().ref('winners').once('value');
 	}
