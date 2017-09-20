@@ -53,6 +53,10 @@ export function getStreaks() {
 			.then(snapshot => {
 				let streaks = [];
 				let survivor = snapshot.val();
+				if (!survivor) {
+					resolve([]);
+					return;
+				}
 				for (let user in users) {
 					let userSurvivor = makeArray(survivor[user]).reverse();
 					streaks.push(
