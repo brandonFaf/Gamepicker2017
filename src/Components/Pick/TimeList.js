@@ -11,7 +11,7 @@ class TimeList extends Component {
 		this.setState({ showError: true });
 	}
 	render() {
-		let { gameTime, games } = this.props;
+		let { gameTime, games, survivor } = this.props;
 		return (
 			<li>
 				<strong>
@@ -28,7 +28,11 @@ class TimeList extends Component {
 							exact
 							path="/pick"
 							render={() =>
-								<PickLine showError={this.showError.bind(this)} game={game} />}
+								<PickLine
+									showError={this.showError.bind(this)}
+									survivorTeams={survivor}
+									game={game}
+								/>}
 						/>
 						<Route
 							exact

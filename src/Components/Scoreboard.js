@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import getScores from '../data/actions/scoreActions';
+import { getScores } from '../data/actions/scoreActions';
 class Scoreboard extends Component {
 	constructor(props) {
 		super(props);

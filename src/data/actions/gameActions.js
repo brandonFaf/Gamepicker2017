@@ -16,9 +16,42 @@ function saveWinnerSuccess(game, winningTeam, losingTeam) {
 function loadPicksSuccess(picks) {
 	return { type: types.LOAD_PICKS_SUCCESS, picks };
 }
+function loadSurvivorSuccess(teams) {
+	return { type: types.LOAD_SURVIVOR_SUCCESS, teams };
+}
 function loadWeeklyRecordsSuccess(teams) {
 	return { type: types.LOAD_WEEKLY_RECORDS_SUCCESS, teams };
 }
+function saveSurvivorSuccess(team, week, id) {
+	return { type: types.SAVE_SURVIVOR, team, week, id };
+}
+
+export function saveSurvivor(team, week, id) {
+	return (dispatch, getState) => {
+		dispatch(showLoading());
+		let updates = {};
+		const { user } = getState();
+		updates[`survivor/${user.id}/${week}`] = { team, id };
+		return GameAPI.save(updates)
+			.then(() => {
+				dispatch(saveSurvivorSuccess(team, week, id));
+			})
+			.catch(err => {
+				throw err;
+			});
+	};
+}
+
+export function loadSurvivor(userId) {
+	return function(dispatch) {
+		return GameAPI.loadUserSurvivor(userId).then(snapshot => {
+			if (snapshot.val()) {
+				dispatch(loadSurvivorSuccess(snapshot.val()));
+			}
+		});
+	};
+}
+
 export function loadGames() {
 	return function(dispatch) {
 		return GameAPI.loadGames()
@@ -44,7 +77,7 @@ export function savePick(game, winningTeam) {
 		const { user } = getState();
 		updates[`picks/${user.id}/${game.id}`] = winningTeam;
 		updates[`games/${game.id}`] = game;
-		return GameAPI.savePick(updates)
+		return GameAPI.save(updates)
 			.then(() => {
 				dispatch(savePickSuccess(game, winningTeam));
 			})
@@ -61,7 +94,7 @@ export function saveWinner(game, winningTeam, losingTeam) {
 		updates[`records/result/${winningTeam}/${game.week}`] = true;
 		updates[`records/result/${losingTeam}/${game.week}`] = false;
 		updates[`games/${game.id}`] = game;
-		return GameAPI.savePick(updates)
+		return GameAPI.save(updates)
 			.then(() => {
 				dispatch(saveWinnerSuccess(game, winningTeam, losingTeam));
 			})

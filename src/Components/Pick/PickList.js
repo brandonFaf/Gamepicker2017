@@ -10,7 +10,12 @@ class PickList extends Component {
 						{Object.keys(this.props.games).map(gameTime => {
 							let games = this.props.games[gameTime];
 							return (
-								<TimeList key={gameTime} gameTime={gameTime} games={games} />
+								<TimeList
+									key={gameTime}
+									survivor={this.props.survivor}
+									gameTime={gameTime}
+									games={games}
+								/>
 							);
 						})}
 					</ul>;
@@ -34,7 +39,8 @@ function getGamesByWeek(games, week) {
 
 function mapStateToProps(state, ownProps) {
 	return {
-		games: getGamesByWeek(state.games, ownProps.week)
+		games: getGamesByWeek(state.games, ownProps.week),
+		survivor: state.survivor
 	};
 }
 
