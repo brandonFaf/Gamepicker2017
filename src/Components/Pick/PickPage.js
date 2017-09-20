@@ -4,7 +4,7 @@ import './pickpage.css';
 class PickPage extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { week: 1 };
+		this.state = { week: 3 };
 	}
 	render() {
 		const weeks = Array.apply(null, { length: 17 }).map(Number.call, Number);
